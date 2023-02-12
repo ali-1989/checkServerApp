@@ -1,0 +1,23 @@
+name: checkServerApp
+description: Server application checker.
+# homepage: https://www.example.com
+
+publish_to: 'none'
+
+version: 0.0.2
+
+environment:
+  sdk: '>=2.15.0'
+
+dependencies:
+  dio: 4.0.6
+  http: 0.13.5
+  file: ^6.1.4
+  system_resources: 1.6.0
+
+  assistance_kit:
+    path: ../AssistanceKit
+
+
+dev_dependencies:
+  test: ^1.23.1
