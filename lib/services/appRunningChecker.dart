@@ -21,8 +21,8 @@ class appRunningChecker {
       js['request_zone'] = 'get_advertising_data';
       js['device_id'] = 'checker1';
       js['app_name'] = 'checker1';
-      js['app_version_code'] = '20000';
-      js['app_version_name'] = '2.0.0';
+      js['app_version_code'] = '10000';
+      js['app_version_name'] = '1.0.0';
 
       final item = HttpItem();
       item.fullUrl = 'http://193.3.182.90:7436/graph-v1';

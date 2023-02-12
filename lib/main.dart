@@ -8,6 +8,7 @@ import 'package:checkServerApp/app/pathNs.dart';
 import 'package:checkServerApp/constants.dart';
 import 'package:checkServerApp/publicAccess.dart';
 import 'package:checkServerApp/services/appRunningChecker.dart';
+import 'package:system_resources/system_resources.dart';
 
 void main(List<String> arguments) async {
   await runZonedGuarded(() async {
@@ -54,6 +55,8 @@ void mainApp() async {
 
   // ignore: unawaited_futures
   PublicAccess.logger.logToAll(startInfo);
+
+  await SystemResources.init();
 
   final cc = appRunningChecker();
   cc.startCheck(Duration(minutes: 1));
