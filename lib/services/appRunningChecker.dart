@@ -7,15 +7,16 @@ import 'package:checkServerApp/rest_api/appHttpDio.dart';
 import 'package:system_resources/system_resources.dart';
 
 class appRunningChecker {
-  Timer? timer;
-  DateTime? lastHighLoadCpu;
+  Timer? _timer;
+  DateTime? _lastHighLoadCpu;
+  int restartCounter = 0;
 
   void startCheck(Duration dur){
-    if(timer != null && timer!.isActive){
+    if(_timer != null && _timer!.isActive){
       return;
     }
 
-    timer = Timer.periodic(dur, (timer) async {
+    _timer = Timer.periodic(dur, (timer) async {
 
       final js = <String, dynamic>{};
       js['request_zone'] = 'get_advertising_data';
@@ -56,19 +57,25 @@ class appRunningChecker {
     final cpu = SystemResources.cpuLoadAvg();
 
     if(cpu >= 0.7){
-      if(lastHighLoadCpu == null){
-        lastHighLoadCpu = DateTime.now().toUtc();
+      if(_lastHighLoadCpu == null){
+        _lastHighLoadCpu = DateTime.now().toUtc();
       }
       else {
-        if (DateHelper.isPastOf(lastHighLoadCpu, Duration(minutes: 15))) {
-          lastHighLoadCpu = null;
-          print('app is not correct running (CPU load) :(    <---------  ${DateTime.now()}');
-          restartServerApp();
+        if (DateHelper.isPastOf(_lastHighLoadCpu, Duration(minutes: 10))) {
+          if(restartCounter > 8){
+            restartSystem();
+          }
+          else {
+            _lastHighLoadCpu = null;
+            restartCounter++;
+            print('app is not correct running (CPU load) $restartCounter  :(    <---------  ${DateTime.now()}');
+            restartServerApp();
+          }
         }
       }
     }
     else {
-      lastHighLoadCpu = null;
+      _lastHighLoadCpu = null;
     }
   }
 }

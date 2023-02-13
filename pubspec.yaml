@@ -4,7 +4,7 @@ description: Server application checker.
 
 publish_to: 'none'
 
-version: 0.0.2
+version: 0.0.3
 
 environment:
   sdk: '>=2.15.0'
