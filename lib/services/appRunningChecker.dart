@@ -62,7 +62,7 @@ class appRunningChecker {
       }
       else {
         if (DateHelper.isPastOf(_lastHighLoadCpu, Duration(minutes: 10))) {
-          if(restartCounter > 8){
+          if(restartCounter > 2){
             restartSystem();
           }
           else {
