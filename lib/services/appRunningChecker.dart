@@ -68,7 +68,7 @@ class appRunningChecker {
           else {
             _lastHighLoadCpu = null;
             restartCounter++;
-            print('app is not correct running (CPU load) $restartCounter  :(    <---------  ${DateTime.now()}');
+            print(' (CPU high load) $restartCounter  :(    <---------  ${DateTime.now()}');
             restartServerApp();
           }
         }

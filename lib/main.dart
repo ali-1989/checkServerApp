@@ -32,7 +32,7 @@ void mainApp() async {
     ====================================================================================
     ==== Name: ${Constants.appName}
     ====================================================================================
-    start at: ${DateTime.now().toUtc()}  UTC | ${DateTime.now()}  Local
+    start at: [${DateTime.now().toUtc()}  UTC] | [${DateTime.now()}  Local]
     execute path: ${PathsNs.getExecutePath()}
     current path: ${PathsNs.getCurrentPath()}
     Dart path: ${Platform.executable}
