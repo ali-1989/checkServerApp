@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:assistance_kit/dateSection/dateHelper.dart';
@@ -21,9 +20,9 @@ class appRunningChecker {
       final js = <String, dynamic>{};
       js['request_zone'] = 'get_advertising_data';
       js['device_id'] = 'checker1';
-      js['app_name'] = 'checker1';
-      js['app_version_code'] = '10000';
-      js['app_version_name'] = '1.0.0';
+      js['app_name'] = 'vosate_zehn';
+      js['app_version_code'] = '50009';
+      js['app_version_name'] = '5.2.9';
 
       final item = HttpItem();
       item.fullUrl = 'http://193.3.182.90:7436/graph-v1';
@@ -50,7 +49,7 @@ class appRunningChecker {
   }
 
   void restartServerApp(){
-    ShellAssistance.shell('/bin/sh', ['/home/app/restart.sh']);
+    ShellAssistance.shell('/bin/bash', ['/home/app/restart.sh']);
   }
 
   void _cpuLoad(){
