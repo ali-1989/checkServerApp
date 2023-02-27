@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:assistance_kit/dateSection/dateHelper.dart';
 import 'package:assistance_kit/shellAssistance.dart';
+import 'package:checkServerApp/publicAccess.dart';
 import 'package:checkServerApp/rest_api/appHttpDio.dart';
 import 'package:system_resources/system_resources.dart';
 
@@ -30,26 +31,25 @@ class appRunningChecker {
       item.setResponseIsPlain();
       item.setBodyJson(js);
 
-      final res = AppHttpDio.send(item);
+      var res = AppHttpDio.send(item);
       await res.response;
 
       if(!res.isOk){
-        print('app is not correct running (REST api) :(    <---------  ${DateTime.now()}');
-        restartServerApp();
-        return;
+        await Future.delayed(Duration(seconds: 3));
+
+        res = AppHttpDio.send(item);
+        await res.response;
+
+        if(!res.isOk){
+          print('app is not correct running (REST api) :(    <---------  ${PublicAccess.grtTehranTime()}');
+          restartSystem();
+          return;
+        }
       }
 
       _cpuLoad();
       //print('app is OK.');
     });
-  }
-
-  void restartSystem(){
-    ShellAssistance.shell('reboot', []);
-  }
-
-  void restartServerApp(){
-    ShellAssistance.shell('/bin/bash', ['/home/app/restart.sh']);
   }
 
   void _cpuLoad(){
@@ -60,15 +60,14 @@ class appRunningChecker {
         _lastHighLoadCpu = DateTime.now().toUtc();
       }
       else {
-        if (DateHelper.isPastOf(_lastHighLoadCpu, Duration(minutes: 10))) {
-          if(restartCounter > 2){
+        if (DateHelper.isPastOf(_lastHighLoadCpu, Duration(minutes: 4))) {
+          if(restartCounter > 1){
+            print(' (CPU high load) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
+            restartCounter = 0;
             restartSystem();
           }
           else {
-            _lastHighLoadCpu = null;
             restartCounter++;
-            print(' (CPU high load) $restartCounter  :(    <---------  ${DateTime.now()}');
-            restartServerApp();
           }
         }
       }
@@ -76,5 +75,13 @@ class appRunningChecker {
     else {
       _lastHighLoadCpu = null;
     }
+  }
+
+  void restartSystem(){
+    ShellAssistance.shell('reboot', []);
+  }
+
+  void restartServerApp(){
+    ShellAssistance.shell('/bin/bash', ['/home/app/restart.sh']);
   }
 }

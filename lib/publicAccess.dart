@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:assistance_kit/api/helpers/textHelper.dart';
 import 'package:assistance_kit/api/logger/logger.dart';
+import 'package:assistance_kit/dateSection/timeZone.dart';
 import 'package:checkServerApp/app/pathNs.dart';
 import 'package:checkServerApp/services/sms_kaveh.dart';
 
@@ -65,5 +66,9 @@ class PublicAccess {
     catch (e) {
       //Main.logToAll("!!! sendReportToDeveloper: " + e.toString(), true);
     }
+  }
+
+  static DateTime grtTehranTime(){
+    return TimeZone.getDateTimeZoned('Asia/Tehran', dayLight: false);
   }
 }
