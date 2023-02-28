@@ -35,7 +35,7 @@ class appRunningChecker {
       await res.response;
 
       if(!res.isOk){
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(Duration(seconds: 5));
 
         res = AppHttpDio.send(item);
         await res.response;
@@ -55,18 +55,19 @@ class appRunningChecker {
   void _cpuLoad(){
     final cpu = SystemResources.cpuLoadAvg();
 
-    if(cpu >= 0.7){
+    if(cpu >= 0.8){
       if(_lastHighLoadCpu == null){
         _lastHighLoadCpu = DateTime.now().toUtc();
       }
       else {
-        if (DateHelper.isPastOf(_lastHighLoadCpu, Duration(minutes: 4))) {
+        if (DateHelper.isPastOf(_lastHighLoadCpu, Duration(minutes: 10))) {
           if(restartCounter > 1){
             print(' (CPU high load) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
             restartCounter = 0;
             restartSystem();
           }
           else {
+            print(' (CPU high load) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
             restartCounter++;
           }
         }

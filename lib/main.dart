@@ -21,7 +21,7 @@ void main(List<String> arguments) async {
     }
     catch (e){
       final finder = Generator.generateIntId(5);
-      PublicAccess.logger.logToAll('UNHANDLED EXCEPTION [finder: $finder]:: $e');
+      PublicAccess.logger.logToAll('UNHANDLED EXCEPTION [finder: $finder][${PublicAccess.grtTehranTime()}]:: $e');
       //PublicAccess.sendReportToDeveloper('unhandled exception_$finder[${Constants.appName}]');
     }
   }, zonedGuardedCatch);
@@ -74,7 +74,7 @@ void zonedGuardedCatch(error, sTrace) {
     txt += '\n STACK TRACE:: $sTrace';
   }
 
-  txt += '\n**************************************** [END ZONED-GUARDED]';
+  txt += '\n**************************************** [END ZONED-GUARDED] ${PublicAccess.grtTehranTime()}';
   PublicAccess.logger.logToAll(txt);
   //PublicAccess.sendReportToDeveloper('zonedGuardedCatch_$finder[${Constants.appName}]');
 
