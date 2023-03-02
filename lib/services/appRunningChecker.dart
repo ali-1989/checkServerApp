@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:assistance_kit/dateSection/dateHelper.dart';
 import 'package:assistance_kit/shellAssistance.dart';
 import 'package:checkServerApp/publicAccess.dart';
 import 'package:checkServerApp/rest_api/appHttpDio.dart';
@@ -35,6 +34,7 @@ class appRunningChecker {
       await res.response;
 
       if(!res.isOk){
+        print('app is not correct running (REST api)  wait for 5 sec and try again   <---------  ${PublicAccess.grtTehranTime()}');
         await Future.delayed(Duration(seconds: 5));
 
         res = AppHttpDio.send(item);
@@ -48,7 +48,6 @@ class appRunningChecker {
       }
 
       _cpuLoad();
-      //print('app is OK.');
     });
   }
 
@@ -57,19 +56,17 @@ class appRunningChecker {
 
     if(cpu >= 0.8){
       if(_lastHighLoadCpu == null){
-        _lastHighLoadCpu = DateTime.now().toUtc();
+        _lastHighLoadCpu = DateTime.now();
       }
       else {
-        if (DateHelper.isPastOf(_lastHighLoadCpu, Duration(minutes: 10))) {
-          if(restartCounter > 1){
-            print(' (CPU high load) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
-            restartCounter = 0;
-            restartSystem();
-          }
-          else {
-            print(' (CPU high load) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
-            restartCounter++;
-          }
+        if(restartCounter > 30){
+          print(' (CPU high load long time) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
+          restartCounter = 0;
+          restartSystem();
+        }
+        else {
+          restartCounter++;
+          print(' (CPU high load) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
         }
       }
     }
