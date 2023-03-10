@@ -62,7 +62,7 @@ class appRunningChecker {
         if(restartCounter > 30){
           print(' (CPU high load long time) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
           restartCounter = 0;
-          restartSystem();
+          //restartSystem();
         }
         else {
           restartCounter++;
