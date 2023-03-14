@@ -4,6 +4,7 @@ import 'package:assistance_kit/shellAssistance.dart';
 import 'package:checkServerApp/publicAccess.dart';
 import 'package:checkServerApp/rest_api/appHttpDio.dart';
 import 'package:system_resources/system_resources.dart';
+import 'package:linux_system_info/linux_system_info.dart';
 
 class appRunningChecker {
   Timer? _timer;
@@ -57,21 +58,24 @@ class appRunningChecker {
     if(cpu >= 0.8){
       if(_lastHighLoadCpu == null){
         _lastHighLoadCpu = DateTime.now();
+        print(' (CPU high load) 1  :(    <---------  ${PublicAccess.grtTehranTime()}');
       }
       else {
-        if(restartCounter > 30){
+        if(restartCounter > 20){
           print(' (CPU high load long time) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
           restartCounter = 0;
-          //restartSystem();
+          _lastHighLoadCpu = null;
+
+          killHighProcess();
         }
         else {
           restartCounter++;
-          print(' (CPU high load) $restartCounter  :(    <---------  ${PublicAccess.grtTehranTime()}');
         }
       }
     }
     else {
       _lastHighLoadCpu = null;
+      restartCounter = 0;
     }
   }
 
@@ -81,5 +85,18 @@ class appRunningChecker {
 
   void restartServerApp(){
     ShellAssistance.shell('/bin/bash', ['/home/app/restart.sh']);
+  }
+
+  void killHighProcess() async {
+    final pList = CpuInfo.getProcessors();
+
+    for(final p in pList){
+      double avg = await p.getCpuUsagePercentage().first;
+      print('av: $avg , model_name:${p.model_name}, core_id:${p.core_id} , physical_id:${p.physical_id} , cpuid_level:${p.cpuid_level} , apicid:${p.apicid} , vendor_id:${p.vendor_id}');
+
+      if(avg > 0.8){
+
+      }
+    }
   }
 }
